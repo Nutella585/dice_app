@@ -8,6 +8,5 @@ The app allows you to roll one dice and display the results on the screen.
 - The app generates random numbers for each dice roll.
 - The total sum of the dice values is displayed on the screen.
 
-## Screenshots
-<image width="200" src="screenshots/screenshot_android.png"/>
-
+## Usage example
+![Rolling Dice](assets/screenshots/rolling_dice.gif "Rolling Dice")
