@@ -6,10 +6,10 @@ class DiceRoller extends StatefulWidget {
   const DiceRoller({super.key});
 
   @override
-  State<DiceRoller> createState() => _DiceRollerState();
+  State<DiceRoller> createState() => DiceRollerState();
 }
 
-class _DiceRollerState extends State<DiceRoller> {
+class DiceRollerState extends State<DiceRoller> {
   int diceRoll = 1;
 
   void rollDice() {
