@@ -1,0 +1,65 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Dice Roller CI (Web)
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job for deploying Flutter web
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup Flutter (no need for Dart setup separately)
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      # Install Flutter dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Enable Flutter for web
+      - name: Enable Flutter Web
+        run: flutter config --enable-web
+
+      # Run Flutter doctor (optional, for debugging setup issues)
+      - name: Run Flutter Doctor
+        run: flutter doctor
+
+      # Build Flutter web for release
+      - name: Build Flutter Web
+        run: flutter build web --release
+
+      # Upload built web files as an artifact for deployment
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'build/web'
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

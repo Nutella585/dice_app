@@ -1,0 +1,54 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dice Roller CI (iOS)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Run Flutter Doctor
+        run: flutter doctor
+
+      # Run tests
+      - name: Run Tests
+        run: flutter test
+
+      # Run build
+      - name: Build iOS (debug) APP for simulator
+        run: flutter build ios --debug --simulator
+
+      - name: Upload iOS (debug) APP for simulator
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/ios/iphonesimulator/Runner.app
+          name: app-debug.app
+
+#      - name: Build iOS (release) IPA
+#        run: flutter build ios --release
+#
+#      - name: Upload iOS (release) IPA
+#        uses: actions/upload-artifact@v2
+#        with:
+#          path: build/app/outputs/flutter-apk/app-release.apk
+#          name: app-release.apk

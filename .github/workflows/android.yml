@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dice Roller CI
+name: Dice Roller CI (Android)
 
 on:
   push:
@@ -18,13 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
       - name: Setup Dart
         uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      # Setup Flutter (to ensure Flutter is available)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
 
@@ -37,3 +33,22 @@ jobs:
       # Run tests
       - name: Run Tests
         run: flutter test
+
+      # Run build
+      - name: Build Android (debug) APK
+        run: flutter build apk --debug
+
+      - name: Upload Android (debug) APK
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: app-debug.apk
+
+#      - name: Build Android (release) APK
+#        run: flutter build android --release
+#
+#      - name: Upload Android (release) APK
+#        uses: actions/upload-artifact@v2
+#        with:
+#          path: build/app/outputs/flutter-apk/app-release.apk
+#          name: app-release.apk
