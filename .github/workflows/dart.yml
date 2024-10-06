@@ -21,21 +21,19 @@ jobs:
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-        with:
-          flutter: true # This enables Flutter for the Dart setup
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - name: Install dependencies
-        run: dart pub get
+      # Setup Flutter (to ensure Flutter is available)
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
+      - name: Install app dependencies
+        run: flutter pub get
 
       - name: Run Flutter Doctor
         run: flutter doctor
 
-      # Run your tests
+      # Run tests
       - name: Run Tests
         run: flutter test
